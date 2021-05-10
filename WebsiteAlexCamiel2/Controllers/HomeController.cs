@@ -28,6 +28,14 @@ namespace WebsiteAlexCamiel2.Controllers
             return View();
         }
 
+        [Route("film/{id}")]
+        public IActionResult Film(string id)
+        {
+            ViewData["id"] = id;
+
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
