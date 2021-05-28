@@ -22,17 +22,29 @@ namespace WebsiteAlexCamiel2.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
+        [Route("contact")]
+        public IActionResult Contact()
         {
             return View();
         }
-
-        [Route("film/{id}")]
-        public IActionResult Film(string id)
+        [Route("actie")]
+        public IActionResult Actie()
         {
-            ViewData["id"] = id;
-
+            return View();
+        }
+        [Route("romantiek")]
+        public IActionResult Romantiek()
+        {
+            return View();
+        }
+        [Route("kinder")]
+        public IActionResult Kinder()
+        {
+            return View();
+        }
+        [Route("comedy")]
+        public IActionResult Comedy()
+        {
             return View();
         }
 
