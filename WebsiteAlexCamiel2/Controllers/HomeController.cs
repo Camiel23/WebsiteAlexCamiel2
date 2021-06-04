@@ -23,24 +23,27 @@ namespace WebsiteAlexCamiel2.Controllers
         public IActionResult Index()
         {
             // alle namen ophalen
-            var names = GetNames();
+            List<string> names = GetNames();
 
             // stop de namen in de html
             return View(names);
         }
 
-        private object GetNames()
+        private object Names
         {
-            throw new NotImplementedException();
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public List<Product> GetProducts()
+        public List<string> GetNames()
         {
             // stel in waar de database gevonden kan worden
-            string connectionString = "Server=172.16.160.21;Port=3306;Database=fastfood;Uid=lgg;Pwd=0P%Y9fI2GdO#;";
+            string connectionString = "Server=172.16.160.21;Port=3306;Database=110407;Uid=110407;Pwd=inf2021sql;";
 
             // maak een lege lijst waar we de namen in gaan opslaan
-            List<Product> products = new List<Product>();
+            List<string> names = new List<string>();
 
             // verbinding maken met de database
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -57,23 +60,17 @@ namespace WebsiteAlexCamiel2.Controllers
                     // elke keer een regel (of eigenlijk: database rij) lezen
                     while (reader.Read())
                     {
-                        Product p = new Product
-                        {
-                            // selecteer de kolommen die je wil lezen. In dit geval kiezen we de kolom "naam"
-                            Id = Convert.ToInt32(reader["Id"]),
-                            Beschikbaarheid = Convert.ToInt32(reader["Beschikbaarheid"]),
-                            Naam = reader["Naam"].ToString(),
-                            Prijs = reader["Prijs"].ToString(),
-                        };
+                        // selecteer de kolommen die je wil lezen. In dit geval kiezen we de kolom "naam"
+                        string Name = reader["Naam"].ToString();
 
                         // voeg de naam toe aan de lijst met namen
-                        products.Add(p);
+                        names.Add(Name);
                     }
                 }
             }
 
             // return de lijst met namen
-            return products;
+            return names;
         }
 
 
