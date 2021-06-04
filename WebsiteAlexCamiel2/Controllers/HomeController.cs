@@ -52,7 +52,7 @@ namespace WebsiteAlexCamiel2.Controllers
                 conn.Open();
 
                 // SQL query die we willen uitvoeren
-                MySqlCommand cmd = new MySqlCommand("select * from product", conn);
+                MySqlCommand cmd = new MySqlCommand("select * from film", conn);
 
                 // resultaat van de query lezen
                 using (var reader = cmd.ExecuteReader())
