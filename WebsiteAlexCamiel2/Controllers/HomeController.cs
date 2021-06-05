@@ -14,6 +14,7 @@ namespace WebsiteAlexCamiel2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private string connectionString;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -73,7 +74,6 @@ namespace WebsiteAlexCamiel2.Controllers
             return names;
         }
 
-
         [Route("contact")]
         public IActionResult Contact()
         {
@@ -99,12 +99,61 @@ namespace WebsiteAlexCamiel2.Controllers
         {
             return View();
         }
+        [Route("film/{id}")]
+        public IActionResult Film(string id)
+        {
+            ViewData["id"] = id;
+
+            return View();
+        }
+
+        private Films GetFilm(string id)
+        {
+            List<Films> films = new List<Films>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand($"select * from film where id {id}", conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Films p = new Films
+                        {
+                            id = Convert.ToInt32(reader["Id"]),
+                            Naam = reader["Naam"].ToString(),
+                            Beschrijving = reader["Beschrijving"].ToString()
+                        };
+                        films.Add(p);
+                    }
+                }
+            }
+            return films[0];
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+    }
+
+    internal class Film
+    {
+        internal int id;
+
+        public string Naam { get; internal set; }
+        public string Beschrijving { get; internal set; }
+    }
+
+    internal class Films
+    {
+        internal int id;
+
+        public string Naam { get; internal set; }
+        public string Beschrijving { get; internal set; }
     }
 
     public class Product
