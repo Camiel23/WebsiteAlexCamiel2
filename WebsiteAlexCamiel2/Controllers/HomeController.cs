@@ -124,7 +124,8 @@ namespace WebsiteAlexCamiel2.Controllers
                         {
                             id = Convert.ToInt32(reader["Id"]),
                             Naam = reader["Naam"].ToString(),
-                            Beschrijving = reader["Beschrijving"].ToString()
+                            Beschrijving = reader["Beschrijving"].ToString(),
+                            Poster = reader["Poster"].ToString()
                         };
                         films.Add(p);
                     }

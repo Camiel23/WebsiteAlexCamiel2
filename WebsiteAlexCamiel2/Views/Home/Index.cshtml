@@ -8,6 +8,7 @@
     @foreach(Films film in Model)
     {
 <div class="film">
+    <img src="@film.Poster" alt="@film.Naam">
     <a href="/film/@film.id">@film.Naam</a>
 </div>
     }
