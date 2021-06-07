@@ -103,9 +103,8 @@ namespace WebsiteAlexCamiel2.Controllers
         [Route("film/{id}")]
         public IActionResult Film(string id)
         {
-            ViewData["id"] = id;
-            GetFilm(id);
-            return View();
+            
+            return View(GetFilm(id));
         }
 
         private Films GetFilm(string id)
