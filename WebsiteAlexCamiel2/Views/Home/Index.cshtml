@@ -1,12 +1,14 @@
-﻿@model List<string>  
+﻿@model List<Films>  
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div>
     <h1>Alle namen!</h1>
-    @foreach(string naam in Model)
+    @foreach(Films film in Model)
     {
-        <p>@naam</p>
+<div class="film">
+    <a href="/film/@film.id">@film.Naam</a>
+</div>
     }
 </div>

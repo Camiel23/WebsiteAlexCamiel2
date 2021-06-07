@@ -26,10 +26,10 @@ namespace WebsiteAlexCamiel2.Controllers
         public IActionResult Index()
         {
             // alle namen ophalen
-            List<string> names = GetNames();
+            var films = GetFilms();
 
             // stop de namen in de html
-            return View(names);
+            return View(films);
         }
 
         private object Names
@@ -105,6 +105,32 @@ namespace WebsiteAlexCamiel2.Controllers
         {
             
             return View(GetFilm(id));
+        }
+
+        private List<Films> GetFilms()
+        {
+            List<Films> films = new List<Films>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand($"select * from film", conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Films p = new Films
+                        {
+                            id = Convert.ToInt32(reader["Id"]),
+                            Naam = reader["Naam"].ToString(),
+                            Beschrijving = reader["Beschrijving"].ToString()
+                        };
+                        films.Add(p);
+                    }
+                }
+            }
+            return films;
         }
 
         private Films GetFilm(string id)

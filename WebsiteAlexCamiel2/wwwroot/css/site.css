@@ -35,3 +35,8 @@ footer {
     font-size: 17px;
     font-family: Arial;
 }
+
+.film{
+    border:1px solid black;
+    padding:20px;
+}
