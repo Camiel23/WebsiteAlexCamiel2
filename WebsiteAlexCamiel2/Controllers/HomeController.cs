@@ -14,12 +14,14 @@ namespace WebsiteAlexCamiel2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private string connectionString;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
+
+        string connectionString = "Server=172.16.160.21;Port=3306;Database=110407;Uid=110407;Pwd=inf2021sql;";
+        // string connectionString = "Server=informatica.st-maartenscollege.nl;Port=3306;Database=110407;Uid=110407;Pwd=inf2021sql;";
 
         public IActionResult Index()
         {
@@ -41,7 +43,6 @@ namespace WebsiteAlexCamiel2.Controllers
         public List<string> GetNames()
         {
             // stel in waar de database gevonden kan worden
-            string connectionString = "Server=172.16.160.21;Port=3306;Database=110407;Uid=110407;Pwd=inf2021sql;";
 
             // maak een lege lijst waar we de namen in gaan opslaan
             List<string> names = new List<string>();
@@ -103,7 +104,7 @@ namespace WebsiteAlexCamiel2.Controllers
         public IActionResult Film(string id)
         {
             ViewData["id"] = id;
-
+            GetFilm(id);
             return View();
         }
 
@@ -114,7 +115,7 @@ namespace WebsiteAlexCamiel2.Controllers
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand($"select * from film where id {id}", conn);
+                MySqlCommand cmd = new MySqlCommand($"select * from film where id = {id}", conn);
 
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -139,24 +140,5 @@ namespace WebsiteAlexCamiel2.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
-
-    internal class Film
-    {
-        internal int id;
-
-        public string Naam { get; internal set; }
-        public string Beschrijving { get; internal set; }
-    }
-
-    internal class Films
-    {
-        internal int id;
-
-        public string Naam { get; internal set; }
-        public string Beschrijving { get; internal set; }
-    }
-
-    public class Product
-    {
-    }
 }
+
