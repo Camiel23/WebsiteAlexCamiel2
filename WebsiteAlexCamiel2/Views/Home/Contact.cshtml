@@ -1,6 +1,32 @@
-﻿@{
-    ViewData["Title"] = "Contact";
+﻿@model WebsiteAlexCamiel2.Models.Person
+@{
+  ViewData["Title"] = "Contact";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>contact pagina</p>
+<form method="post" class="contactform">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Voornaam)
+        @Html.TextBoxFor(m => m.Voornaam)
+        @Html.ValidationMessageFor(m => m.Voornaam)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Achternaam)
+        @Html.TextBoxFor(m => m.Achternaam)
+        @Html.ValidationMessageFor(m => m.Achternaam)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email)
+        @Html.ValidationMessageFor(m => m.Email)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Omschrijving)
+        @Html.TextBoxFor(m => m.Omschrijving)
+        @Html.ValidationMessageFor(m => m.Omschrijving)
+    </div>
+
+    <input type="submit" value="verstuur" />
+</form>
