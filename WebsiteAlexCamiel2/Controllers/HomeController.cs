@@ -79,12 +79,31 @@ namespace WebsiteAlexCamiel2.Controllers
         public IActionResult Contact(Person person)
         {
             //als alles goed ingevuld is --> succes pagina
-            if (ModelState.IsValid)
-                return Redirect("/succes");
+            if (ModelState.IsValid){
+                // alle benodigde gegevens zijn aanwezig, we kunnen opslaan!
+                SavePerson(person);
 
+                return Redirect("/succes");
+            }
             //als niet alles goed ingevuld is --> terug 
             return View(person);
         }
+
+        private void SavePerson(Person person)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO ethapklant(voornaam, achternaam, email, omschrijving) VALUES(?voornaam, ?achternaam, ?email, ?omschrijving)", conn);
+
+                cmd.Parameters.Add("?voornaam", MySqlDbType.Text).Value = person.Voornaam;
+                cmd.Parameters.Add("?achternaam", MySqlDbType.Text).Value = person.Achternaam;
+                cmd.Parameters.Add("?email", MySqlDbType.Text).Value = person.Email;
+                cmd.Parameters.Add("?omschrijving", MySqlDbType.Text).Value = person.Omschrijving;
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 
         [Route("succes")]
         public IActionResult Succes()
