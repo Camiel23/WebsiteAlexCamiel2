@@ -33,7 +33,7 @@ namespace WebsiteAlexCamiel2.Controllers
                 return View(films);
             }
             {
-                ViewData["User"] = HttpContext.Session.GetString("User");
+                ViewData["user"] = HttpContext.Session.GetString("User");
                 return View();
             }
         }
@@ -44,7 +44,7 @@ namespace WebsiteAlexCamiel2.Controllers
             if (password == "geheim")
             {
                 HttpContext.Session.SetString("User", username);
-                return Redirect("/index");
+                return Redirect("/");
             }
 
             return View();
