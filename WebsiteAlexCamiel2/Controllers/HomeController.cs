@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebsiteAlexCamiel2.Models;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Http;
 
 namespace WebsiteAlexCamiel2.Controllers
 {
@@ -25,11 +26,28 @@ namespace WebsiteAlexCamiel2.Controllers
 
         public IActionResult Index()
         {
-            // alle namen ophalen
-            var films = GetFilms();
+            {  // alle namen ophalen
+                var films = GetFilms();
 
-            // stop de namen in de html
-            return View(films);
+                // stop de namen in de html
+                return View(films);
+            }
+            {
+                ViewData["User"] = HttpContext.Session.GetString("User");
+                return View();
+            }
+        }
+
+        [Route("login")]
+        public IActionResult Loginpagina(string username, string password)
+        {
+            if (password == "geheim")
+            {
+                HttpContext.Session.SetString("User", username);
+                return Redirect("/index");
+            }
+
+            return View();
         }
 
         private object Names
