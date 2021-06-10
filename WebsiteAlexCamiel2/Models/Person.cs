@@ -20,6 +20,11 @@ namespace WebsiteAlexCamiel2.Models
         [EmailAddress(ErrorMessage = "Geen geldig email adres")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Wachtwoord is een verplicht veld")]
+        [Display(Name = "Wachtwoord")]
+        public string Wachtwoord { get; set; }
+        
+
         public string Telefoon { get; set; }
 
         public string Adres { get; set; }

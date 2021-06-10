@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using WebsiteAlexCamiel2.Models;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WebsiteAlexCamiel2.Controllers
 {
@@ -41,10 +43,20 @@ namespace WebsiteAlexCamiel2.Controllers
         [Route("login")]
         public IActionResult Loginpagina(string username, string password)
         {
-            if (password == "geheim")
+            // hash voor "wachtwoord"
+            string hash = "dc00c903852bb19eb250aeba05e534a6d211629d77d055033806b783bae09937";
+
+            // is er een wachtwoord ingevoerd?
+            if (!string.IsNullOrWhiteSpace(password))
             {
-                HttpContext.Session.SetString("User", username);
-                return Redirect("/");
+
+                //Er is iets ingevoerd, nu kunnen we het wachtwoord hashen en vergelijken met de hash "uit de database"
+                string hashVanIngevoerdWachtwoord = ComputeSha256Hash(password);
+                if (hashVanIngevoerdWachtwoord == hash)
+                {
+                    HttpContext.Session.SetString("User", username);
+                    return Redirect("/");
+                }
             }
 
             return View();
@@ -109,13 +121,16 @@ namespace WebsiteAlexCamiel2.Controllers
 
         private void SavePerson(Person person)
         {
+            //voordat alles opgeslagen wordt eerst hashen
+            person.Wachtwoord = ComputeSha256Hash(person.Wachtwoord);
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO ethapklant(voornaam, achternaam, email, omschrijving) VALUES(?voornaam, ?achternaam, ?email, ?omschrijving)", conn);
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO ethapklant(voornaam, achternaam, wachtwoord, email, omschrijving) VALUES(?voornaam, ?achternaam, ?wachtwoord, ?email, ?omschrijving)", conn);
 
                 cmd.Parameters.Add("?voornaam", MySqlDbType.Text).Value = person.Voornaam;
                 cmd.Parameters.Add("?achternaam", MySqlDbType.Text).Value = person.Achternaam;
+                cmd.Parameters.Add("?wachtwoord", MySqlDbType.Text).Value = person.Wachtwoord;
                 cmd.Parameters.Add("?email", MySqlDbType.Text).Value = person.Email;
                 cmd.Parameters.Add("?omschrijving", MySqlDbType.Text).Value = person.Omschrijving;
                 cmd.ExecuteNonQuery();
@@ -208,6 +223,25 @@ namespace WebsiteAlexCamiel2.Controllers
             }
             return films[0];
         }
+
+        static string ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
