@@ -44,6 +44,8 @@ footer {
 
 .contactform label {
     width: 100px;
+    height: 50px;
+    padding: 15px;
 }
 
 .contactform .field-validation-error {
@@ -54,11 +56,24 @@ footer {
 img{
     width: 60%;
 }
-.filmtitel{
-    font-family:Arial;
-    font-size: 15px;
-}
+
 
 .display-4{
-    padding 15%;
+    padding-left: 15%;
+}
+
+.filmtitel {
+    background-color: #B8B8B8;
+    color: black;
+    width: 60%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: Arial;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+}
+
+form{
+    padding: 15px;
 }
