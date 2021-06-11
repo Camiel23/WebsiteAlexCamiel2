@@ -157,12 +157,12 @@ namespace WebsiteAlexCamiel2.Controllers
         [Route("kinder")]
         public IActionResult Kinder()
         {
-            return View();
+            return View(GetKinderFilms());
         }
         [Route("comedy")]
         public IActionResult Comedy()
         {
-            return View();
+            return View(GetComedyFilms());
         }
         [Route("film/{id}")]
         public IActionResult Film(string id)
@@ -277,6 +277,61 @@ namespace WebsiteAlexCamiel2.Controllers
             }
             return Romantiekfilms;
         }
+
+        private List<Films> GetComedyFilms()
+        {
+            List<Films> Comedyfilms = new List<Films>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand($"select * from film where genre ='Comedy'", conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Films p = new Films
+                        {
+                            id = Convert.ToInt32(reader["Id"]),
+                            Naam = reader["Naam"].ToString(),
+                            Beschrijving = reader["Beschrijving"].ToString(),
+                            Poster = reader["Poster"].ToString()
+                        };
+                        Comedyfilms.Add(p);
+                    }
+                }
+            }
+            return Comedyfilms;
+        }
+
+        private List<Films> GetKinderFilms()
+        {
+            List<Films> Kinderfilms = new List<Films>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand($"select * from film where genre ='Kinderfilms'", conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Films p = new Films
+                        {
+                            id = Convert.ToInt32(reader["Id"]),
+                            Naam = reader["Naam"].ToString(),
+                            Beschrijving = reader["Beschrijving"].ToString(),
+                            Poster = reader["Poster"].ToString()
+                        };
+                        Kinderfilms.Add(p);
+                    }
+                }
+            }
+            return Kinderfilms;
+        }
+
 
         static string ComputeSha256Hash(string rawData)
         {
