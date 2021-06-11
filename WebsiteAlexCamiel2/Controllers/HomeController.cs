@@ -28,16 +28,17 @@ namespace WebsiteAlexCamiel2.Controllers
 
         public IActionResult Index()
         {
-            {  // alle namen ophalen
+              // alle namen ophalen
                 var films = GetFilms();
+           
+            ViewData["user"] = HttpContext.Session.GetString("User");
+            
 
-                // stop de namen in de html
-                return View(films);
-            }
-            {
-                ViewData["user"] = HttpContext.Session.GetString("User");
-                return View();
-            }
+            // stop de namen in de html
+            return View(films);
+            
+            
+                
         }
 
         [Route("login")]
@@ -144,6 +145,12 @@ namespace WebsiteAlexCamiel2.Controllers
             return View();
         }
 
+        [Route("404")]
+        public IActionResult Errorpage()
+        {
+            return View();
+        }
+
         [Route("actie")]
         public IActionResult Actie()
         {
@@ -164,6 +171,7 @@ namespace WebsiteAlexCamiel2.Controllers
         {
             return View(GetComedyFilms());
         }
+
         [Route("film/{id}")]
         public IActionResult Film(string id)
         {
