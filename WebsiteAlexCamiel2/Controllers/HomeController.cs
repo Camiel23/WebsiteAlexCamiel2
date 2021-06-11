@@ -152,7 +152,7 @@ namespace WebsiteAlexCamiel2.Controllers
         [Route("romantiek")]
         public IActionResult Romantiek()
         {
-            return View();
+            return View(GetRomantiekFilms());
         }
         [Route("kinder")]
         public IActionResult Kinder()
@@ -249,6 +249,33 @@ namespace WebsiteAlexCamiel2.Controllers
                 }
             }
             return Actiefilms;
+        }
+
+        private List<Films> GetRomantiekFilms()
+        {
+            List<Films> Romantiekfilms = new List<Films>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand($"select * from film where genre ='Romantiek'", conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Films p = new Films
+                        {
+                            id = Convert.ToInt32(reader["Id"]),
+                            Naam = reader["Naam"].ToString(),
+                            Beschrijving = reader["Beschrijving"].ToString(),
+                            Poster = reader["Poster"].ToString()
+                        };
+                        Romantiekfilms.Add(p);
+                    }
+                }
+            }
+            return Romantiekfilms;
         }
 
         static string ComputeSha256Hash(string rawData)
