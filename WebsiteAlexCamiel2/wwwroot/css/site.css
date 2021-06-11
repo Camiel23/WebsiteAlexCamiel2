@@ -37,8 +37,9 @@ footer {
 }
 
 .film{
-    border:1px solid black;
-    padding:20px;
+    padding: 20px;
+    padding-left: 20%;
+    
 }
 
 .contactform label {
@@ -48,4 +49,16 @@ footer {
 .contactform .field-validation-error {
     color: red;
     margin-left: 10px;
+}
+
+img{
+    width: 60%;
+}
+.filmtitel{
+    font-family:Arial;
+    font-size: 15px;
+}
+
+.display-4{
+    padding 15%;
 }

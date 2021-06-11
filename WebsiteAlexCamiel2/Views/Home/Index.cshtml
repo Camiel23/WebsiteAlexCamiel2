@@ -4,12 +4,11 @@
 }
 <h1 class="display-4">Welcome, @ViewData["user"]</h1>
 <div>
-    <h1>Alle namen!</h1>
     @foreach(Films film in Model)
     {
 <div class="film">
     <img src="@film.Poster" alt="@film.Naam">
-    <a href="/film/@film.id">@film.Naam</a>
+    <div class="filmtitel"><a href="/film/@film.id">@film.Naam</a></div>
 </div>
     }
 </div>
