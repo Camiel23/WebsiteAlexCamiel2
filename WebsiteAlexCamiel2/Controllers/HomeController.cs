@@ -23,8 +23,8 @@ namespace WebsiteAlexCamiel2.Controllers
             _logger = logger;
         }
 
-        //string connectionString = "Server=172.16.160.21;Port=3306;Database=110407;Uid=110407;Pwd=inf2021sql;";
-        string connectionString = "Server=informatica.st-maartenscollege.nl;Port=3306;Database=110407;Uid=110407;Pwd=inf2021sql;";
+        string connectionString = "Server=172.16.160.21;Port=3306;Database=110407;Uid=110407;Pwd=inf2021sql;";
+        //string connectionString = "Server=informatica.st-maartenscollege.nl;Port=3306;Database=110407;Uid=110407;Pwd=inf2021sql;";
 
         public IActionResult Index()
         {
@@ -147,7 +147,7 @@ namespace WebsiteAlexCamiel2.Controllers
         [Route("actie")]
         public IActionResult Actie()
         {
-            return View();
+            return View(GetActieFilms());
         }
         [Route("romantiek")]
         public IActionResult Romantiek()
@@ -222,6 +222,33 @@ namespace WebsiteAlexCamiel2.Controllers
                 }
             }
             return films[0];
+        }
+
+        private List<Films> GetActieFilms()
+        {
+            List<Films> Actiefilms = new List<Films>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand($"select * from film where genre ='Actie'", conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Films p = new Films
+                        {
+                            id = Convert.ToInt32(reader["Id"]),
+                            Naam = reader["Naam"].ToString(),
+                            Beschrijving = reader["Beschrijving"].ToString(),
+                            Poster = reader["Poster"].ToString()
+                        };
+                        Actiefilms.Add(p);
+                    }
+                }
+            }
+            return Actiefilms;
         }
 
         static string ComputeSha256Hash(string rawData)

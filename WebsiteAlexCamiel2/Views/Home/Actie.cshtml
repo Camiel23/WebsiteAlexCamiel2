@@ -1,6 +1,16 @@
-﻿@{
+﻿@model List<Films>
+@{
     ViewData["Title"] = "Actie";
 }
 <h1>@ViewData["id"]</h1>
 
-<p>Alle actiefilms</p>
+<div>
+    <h1>Alle namen!</h1>
+    @foreach (Films Actiefilm in Model)
+    {
+        <div class="film">
+            <img src="@Actiefilm.Poster" alt="@Actiefilm.Naam">
+            <a href="/film/@Actiefilm.id">@Actiefilm.Naam</a>
+        </div>
+    }
+</div>
